@@ -33,74 +33,41 @@ const quizData = [
   },
 ];
 
-const questionsContainer = document.getElementById("questions");
-const submitBtn = document.getElementById("submit");
-const scoreDiv = document.getElementById("score");
+const qDiv = document.getElementById("questions");
+const scoreDiv = document.getElemntById("score")
 
-// Get saved progress from sessionStorage
 let savedProgress =
   JSON.parse(sessionStorage.getItem("progress")) || {};
 
-// Display Questions
+        //---------Display question
 quizData.forEach((q, index) => {
-  const questionDiv = document.createElement("div");
+	const qContainer = document.createElement("div");
+	const qTitle = document.createElement("h3");
+	qTitle.textContent = `${index + 1}. ${q.question}`
 
-  const questionTitle = document.createElement("h3");
-  questionTitle.textContent = `${index + 1}. ${q.question}`;
-  questionDiv.appendChild(questionTitle);
+	qContainer.appendChild(qTitle);
 
-  q.options.forEach((option) => {
-    const label = document.createElement("label");
-
-    const radio = document.createElement("input");
-    radio.type = "radio";
-    radio.name = `question-${index}`;
-    radio.value = option;
-
-    // Restore checked answer after refresh
-    if (savedProgress[index] === option) {
-      radio.checked = true;
-    }
-
-    // Save answer in sessionStorage
-    radio.addEventListener("change", () => {
-      savedProgress[index] = option;
-
-      sessionStorage.setItem(
-        "progress",
-        JSON.stringify(savedProgress)
-      );
-    });
-
-    label.appendChild(radio);
-    label.append(option);
-
-    questionDiv.appendChild(label);
-    questionDiv.appendChild(document.createElement("br"));
-  });
-
-  questionsContainer.appendChild(questionDiv);
+	   //----------Display options
+	q.options.forEach((option) => {
+		qContainer.innerHTML += `
+	<label>
+		<input
+		type="radio"
+		name="question-${index}"
+		value="${option}"
+		> ${option}
+	</label>
+	<br>
+		`;
+	})
+	qDiv.appendChild(qContainer);
 });
+   ///Storing final score ====> local storage
+let score = localStorage.setItem("score");
+const savedScore = localStorage.getItem("score");
 
-// Show previous score from localStorage
-const storedScore = localStorage.getItem("score");
-
-if (storedScore !== null) {
-  scoreDiv.textContent = `Your score is ${storedScore} out of 5.`;
+if(savedScore !== null) {
+	scoreDiv.textContent = `Your score is ${savedScore} out of 5`
 }
 
-// Submit Quiz
-submitBtn.addEventListener("click", () => {
-  let score = 0;
 
-  quizData.forEach((q, index) => {
-    if (savedProgress[index] === q.answer) {
-      score++;
-    }
-  });
-
-  scoreDiv.textContent = `Your score is ${score} out of 5.`;
-
-  // Save score in localStorage
-  localStorage.setItem("score", score);
-});
