@@ -1,1 +1,10 @@
 /*  your css code here. If applicable */
+#submit{
+	width:70px;
+	height: 30px;
+	background-color: lightskyblue;
+	border: none;
+	font-size:15px;
+	cursor: pointer;
+	margin: 20px auto;
+}
