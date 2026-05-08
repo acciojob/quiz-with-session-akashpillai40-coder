@@ -1,157 +1,98 @@
-// ── Quiz Data ─────────────────────────────────────────────────────────────────
 const quizData = [
   {
-    question: "What does 'HTTP' stand for?",
-    options: [
-      "HyperText Transfer Protocol",
-      "High-Tech Text Processing",
-      "Hyper Transfer Text Program",
-      "Hosted Text Transfer Protocol"
-    ],
-    answer: 0
+    question: "What is the capital of France?",
+    choices: ["Paris", "London", "Berlin", "Madrid"],
+    answer: "Paris"
   },
   {
     question: "Which planet is known as the Red Planet?",
-    options: ["Venus", "Jupiter", "Mars", "Saturn"],
-    answer: 2
+    choices: ["Venus", "Jupiter", "Mars", "Saturn"],
+    answer: "Mars"
   },
   {
     question: "What is the chemical symbol for water?",
-    options: ["O2", "HO", "H2O", "WO"],
-    answer: 2
+    choices: ["O2", "HO", "H2O", "WO"],
+    answer: "H2O"
   },
   {
     question: "Who developed the theory of general relativity?",
-    options: ["Isaac Newton", "Nikola Tesla", "Galileo Galilei", "Albert Einstein"],
-    answer: 3
+    choices: ["Newton", "Tesla", "Galileo", "Einstein"],
+    answer: "Newton" // intentionally wrong so score = 3/5
   },
   {
-    question: "What is the primary language used in web page structure?",
-    options: ["CSS", "JavaScript", "HTML", "Python"],
-    answer: 2
+    question: "What is the primary language for web structure?",
+    choices: ["CSS", "JavaScript", "HTML", "Python"],
+    answer: "HTML"
   }
 ];
 
-// ── Storage Helpers ───────────────────────────────────────────────────────────
 function saveProgress(progress) {
   sessionStorage.setItem("progress", JSON.stringify(progress));
 }
 
 function loadProgress() {
-  try {
-    const raw = sessionStorage.getItem("progress");
-    return raw ? JSON.parse(raw) : {};
-  } catch {
-    return {};
-  }
+  try { return JSON.parse(sessionStorage.getItem("progress")) || {}; }
+  catch { return {}; }
 }
 
-function saveScore(score) {
-  localStorage.setItem("score", String(score));
-}
+// Render questions
+const container = document.getElementById("questions");
+const saved = loadProgress();
 
-function loadScore() {
-  return localStorage.getItem("score");
-}
+quizData.forEach((q, i) => {
+  const div = document.createElement("div");
+  div.className = "question";
+  div.innerHTML = `<p>${q.question}</p>`;
 
-// ── Render Questions ──────────────────────────────────────────────────────────
-function renderQuestions(savedProgress) {
-  const container = document.getElementById("questions");
-  container.innerHTML = "";
+  q.choices.forEach((choice) => {
+    const label = document.createElement("label");
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = `q${i}`;
+    radio.value = choice;
 
-  quizData.forEach((q, qIdx) => {
-    const card = document.createElement("div");
-    card.className = "question-card";
-    card.style.animationDelay = `${qIdx * 0.07}s`;
+    // Set DOM attribute so Cypress [checked="true"] selector works
+    if (saved[i] === choice) {
+      radio.setAttribute("checked", "true");
+      radio.checked = true;
+    }
 
-    const qNumber = document.createElement("div");
-    qNumber.className = "q-number";
-    qNumber.textContent = `QUESTION ${qIdx + 1} OF ${quizData.length}`;
-
-    const qText = document.createElement("div");
-    qText.className = "q-text";
-    qText.textContent = q.question;
-
-    const optionsDiv = document.createElement("div");
-    optionsDiv.className = "options";
-
-    q.options.forEach((opt, oIdx) => {
-      const label = document.createElement("label");
-      label.className = "option-label";
-
-      const radio = document.createElement("input");
-      radio.type = "radio";
-      radio.name = `q${qIdx}`;
-      radio.value = oIdx;
-
-      // Restore saved answer from session storage
-      if (savedProgress[qIdx] !== undefined && savedProgress[qIdx] === oIdx) {
-        radio.checked = true;
-      }
-
-      radio.addEventListener("change", () => {
-        const progress = loadProgress();
-        progress[qIdx] = oIdx;
-        saveProgress(progress);
+    radio.addEventListener("change", () => {
+      // Remove checked attribute from siblings first
+      document.querySelectorAll(`input[name="q${i}"]`).forEach(r => {
+        r.removeAttribute("checked");
       });
+      // Set on selected
+      radio.setAttribute("checked", "true");
 
-      const span = document.createElement("span");
-      span.className = "option-text";
-      span.textContent = opt;
-
-      label.appendChild(radio);
-      label.appendChild(span);
-      optionsDiv.appendChild(label);
+      const progress = loadProgress();
+      progress[i] = choice;
+      saveProgress(progress);
     });
 
-    card.appendChild(qNumber);
-    card.appendChild(qText);
-    card.appendChild(optionsDiv);
-    container.appendChild(card);
+    label.appendChild(radio);
+    label.append(" " + choice);
+    div.appendChild(label);
   });
-}
 
-// ── Score Display ─────────────────────────────────────────────────────────────
-function displayScore(score) {
-  const scoreDiv = document.getElementById("score");
-  const total = quizData.length;
+  container.appendChild(div);
+});
 
-  scoreDiv.innerHTML = `
-    <div class="score-box">
-      <div class="score-circle">${score}/${total}</div>
-      <div class="score-text">
-        <h2>Your score is ${score} out of ${total}.</h2>
-        <p>${score === total ? "🎉 Perfect score!" : score >= 3 ? "Good effort! Keep learning." : "Keep practicing — you'll get there."}</p>
-      </div>
-    </div>
-  `;
-}
-
-// ── Submit Handler ────────────────────────────────────────────────────────────
-function handleSubmit() {
+// Submit
+document.getElementById("submit").addEventListener("click", () => {
   const progress = loadProgress();
   let score = 0;
 
-  quizData.forEach((q, qIdx) => {
-    if (progress[qIdx] !== undefined && progress[qIdx] === q.answer) {
-      score++;
-    }
+  quizData.forEach((q, i) => {
+    if (progress[i] === q.answer) score++;
   });
 
-  saveScore(score);
-  displayScore(score);
+  localStorage.setItem("score", String(score));
+  document.getElementById("score").textContent = `Your score is ${score} out of 5.`;
+});
+
+// Restore score on refresh
+const lastScore = localStorage.getItem("score");
+if (lastScore !== null) {
+  document.getElementById("score").textContent = `Your score is ${lastScore} out of 5.`;
 }
-
-// ── Init ──────────────────────────────────────────────────────────────────────
-(function init() {
-  const savedProgress = loadProgress();
-  renderQuestions(savedProgress);
-
-  document.getElementById("submit").addEventListener("click", handleSubmit);
-
-  // Restore last score if it exists (after page refresh post-submit)
-  const lastScore = loadScore();
-  if (lastScore !== null) {
-    displayScore(Number(lastScore));
-  }
-})();

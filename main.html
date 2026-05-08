@@ -2,26 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Quiz App</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 16px; }
+    .question { margin-bottom: 24px; }
+    .question p { font-weight: bold; margin-bottom: 8px; }
+    label { display: block; margin-bottom: 6px; cursor: pointer; }
+    button { padding: 10px 24px; font-size: 16px; cursor: pointer; margin-top: 16px; }
+    #score { margin-top: 24px; font-size: 18px; font-weight: bold; }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="header-tag">KNOWLEDGE CHECK</div>
-      <h1>Science &amp; Tech Quiz</h1>
-      <p class="subtitle">5 questions · Select one answer per question</p>
-    </header>
 
-    <div id="questions"></div>
-
-    <div class="actions">
-      <button id="submit">Submit Quiz</button>
-    </div>
-
-    <div id="score"></div>
-  </div>
+  <h1>Quiz</h1>
+  <div id="questions"></div>
+  <button id="submit">Submit</button>
+  <div id="score"></div>
 
   <script src="script.js"></script>
 </body>
