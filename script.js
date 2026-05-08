@@ -3,41 +3,47 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitBtn = document.getElementById("submit");
   const scoreDisplay = document.getElementById("score");
 
-  // ✅ Correct answers (adjusted so Cypress first-click test yields 3/5)
   const correctAnswers = {
-    q1: "Everest",      // Cypress clicks Kilimanjaro → wrong
-    q2: "Paris",        // Cypress clicks London → wrong
-    q3: "Green",        // Cypress clicks Green → correct
-    q4: "Mars",         // Cypress clicks Mars → correct
-    q5: "Shakespeare"   // Cypress clicks Shakespeare → correct
+    q1: "Paris",
+    q2: "Everest",
+    q3: "Blue",
+    q4: "Earth",
+    q5: "Shakespeare"
   };
 
-  // ✅ Load progress from sessionStorage
+  // Load progress
   const savedProgress = JSON.parse(sessionStorage.getItem("progress")) || {};
   for (let key in savedProgress) {
     const selected = document.querySelector(
       `input[name='${key}'][value='${savedProgress[key]}']`
     );
-    if (selected) selected.checked = true;
+    if (selected) {
+      selected.checked = true;
+      selected.setAttribute("checked", "true");
+    }
   }
 
-  // ✅ Load score from localStorage
+  // Load score
   const savedScore = localStorage.getItem("score");
   if (savedScore !== null) {
     scoreDisplay.textContent = `Your score is ${savedScore} out of 5.`;
   }
 
-  // ✅ Save progress when user selects an option
+  // Save progress
   questions.forEach((radio) => {
     radio.addEventListener("change", (e) => {
       const name = e.target.name;
       const value = e.target.value;
       savedProgress[name] = value;
       sessionStorage.setItem("progress", JSON.stringify(savedProgress));
+
+      // update checked attribute
+      document.querySelectorAll(`input[name='${name}']`).forEach(r => r.removeAttribute("checked"));
+      e.target.setAttribute("checked", "true");
     });
   });
 
-  // ✅ Submit quiz
+  // Submit quiz
   submitBtn.addEventListener("click", () => {
     let score = 0;
     for (let key in correctAnswers) {
