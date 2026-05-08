@@ -1,13 +1,18 @@
 const quizData = [
   {
-    question: "Capital of India?",
-    options: ["Delhi", "Mumbai", "Chennai", "Kolkata"],
-    answer: "Delhi",
+    question: "What is the capital of France?",
+    options: ["Paris", "London", "Berlin", "Madrid"],
+    answer: "Paris",
   },
   {
-    question: "5 + 2 = ?",
-    options: ["7", "4", "5", "6"],
-    answer: "7",
+    question: "What is 2 + 2?",
+    options: ["3", "4", "5", "6"],
+    answer: "4",
+  },
+  {
+    question: "Which language runs in browser?",
+    options: ["Python", "Java", "JavaScript", "C++"],
+    answer: "JavaScript",
   },
   {
     question: "HTML stands for?",
@@ -24,11 +29,6 @@ const quizData = [
     options: ["Styling", "Database", "Backend", "Server"],
     answer: "Styling",
   },
-  {
-    question: "JavaScript is a?",
-    options: ["Programming Language", "Database", "Server", "Browser"],
-    answer: "Programming Language",
-  },
 ];
 
 const qDiv = document.getElementById("questions");
@@ -37,20 +37,15 @@ const submitBtn = document.getElementById("submit");
 
 let savedProgress = JSON.parse(sessionStorage.getItem("progress")) || {};
 
-// show saved score
 const savedScore = localStorage.getItem("score");
 
 if (savedScore !== null) {
-  scoreDiv.textContent = `Your score is ${savedScore} out of 5`;
+  scoreDiv.textContent = `Your score is ${savedScore} out of 5.`;
 }
 
-// display questions
 quizData.forEach((q, index) => {
   const qContainer = document.createElement("div");
-  const qTitle = document.createElement("h3");
-
-  qTitle.textContent = `${index + 1}. ${q.question}`;
-  qContainer.appendChild(qTitle);
+  qContainer.textContent = q.question;
 
   q.options.forEach((option) => {
     const label = document.createElement("label");
@@ -60,13 +55,19 @@ quizData.forEach((q, index) => {
     radio.name = `question-${index}`;
     radio.value = option;
 
-    // restore saved answer
     if (savedProgress[index] === option) {
       radio.checked = true;
+      radio.setAttribute("checked", "true");
     }
 
-    // save progress
     radio.addEventListener("change", () => {
+      document
+        .querySelectorAll(`input[name="question-${index}"]`)
+        .forEach((r) => r.removeAttribute("checked"));
+
+      radio.checked = true;
+      radio.setAttribute("checked", "true");
+
       savedProgress[index] = option;
       sessionStorage.setItem("progress", JSON.stringify(savedProgress));
     });
@@ -75,13 +76,11 @@ quizData.forEach((q, index) => {
     label.append(option);
 
     qContainer.appendChild(label);
-    qContainer.appendChild(document.createElement("br"));
   });
 
   qDiv.appendChild(qContainer);
 });
 
-// submit
 submitBtn.addEventListener("click", () => {
   let score = 0;
 
@@ -91,7 +90,6 @@ submitBtn.addEventListener("click", () => {
     }
   });
 
-  scoreDiv.textContent = `Your score is ${score} out of 5`;
-
+  scoreDiv.textContent = `Your score is ${score} out of 5.`;
   localStorage.setItem("score", score);
 });
