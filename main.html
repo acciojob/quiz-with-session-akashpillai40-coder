@@ -1,50 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Quiz</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz App</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="questions">
-    <div>
-      <p>What is the capital of France?</p>
-      <label><input type="radio" name="q1" value="Paris">Paris</label>
-      <label><input type="radio" name="q1" value="London">London</label>
-      <label><input type="radio" name="q1" value="Berlin">Berlin</label>
-      <label><input type="radio" name="q1" value="Rome">Rome</label>
-    </div>
-    <div>
-      <p>Which is the highest mountain?</p>
-      <label><input type="radio" name="q2" value="Everest">Everest</label>
-      <label><input type="radio" name="q2" value="K2">K2</label>
-      <label><input type="radio" name="q2" value="Denali">Denali</label>
-      <label><input type="radio" name="q2" value="Kilimanjaro">Kilimanjaro</label>
-    </div>
-    <div>
-      <p>Color of the sky?</p>
-      <label><input type="radio" name="q3" value="Green">Green</label>
-      <label><input type="radio" name="q3" value="Blue">Blue</label>
-      <label><input type="radio" name="q3" value="Red">Red</label>
-      <label><input type="radio" name="q3" value="Yellow">Yellow</label>
-    </div>
-    <div>
-      <p>Which planet do we live on?</p>
-      <label><input type="radio" name="q4" value="Mars">Mars</label>
-      <label><input type="radio" name="q4" value="Earth">Earth</label>
-      <label><input type="radio" name="q4" value="Venus">Venus</label>
-      <label><input type="radio" name="q4" value="Jupiter">Jupiter</label>
-    </div>
-    <div>
-      <p>Who wrote Hamlet?</p>
-      <label><input type="radio" name="q5" value="Shakespeare">Shakespeare</label>
-      <label><input type="radio" name="q5" value="Tolstoy">Tolstoy</label>
-      <label><input type="radio" name="q5" value="Homer">Homer</label>
-      <label><input type="radio" name="q5" value="Dickens">Dickens</label>
-    </div>
-  </div>
+  <div class="container">
+    <header>
+      <div class="header-tag">KNOWLEDGE CHECK</div>
+      <h1>Science &amp; Tech Quiz</h1>
+      <p class="subtitle">5 questions · Select one answer per question</p>
+    </header>
 
-  <button id="submit">Submit</button>
-  <div id="score"></div>
+    <div id="questions"></div>
+
+    <div class="actions">
+      <button id="submit">Submit Quiz</button>
+    </div>
+
+    <div id="score"></div>
+  </div>
 
   <script src="script.js"></script>
 </body>
