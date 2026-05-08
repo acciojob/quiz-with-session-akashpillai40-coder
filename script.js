@@ -6,12 +6,12 @@ const quizData = [
   },
   {
     question: "What is the highest mountain in the world?",
-    choices: ["K2", "Mount Everest", "Kilimanjaro", "Denali"],
-    answer: "Mount Everest",
+    choices: ["Everest", "K2", "Kilimanjaro", "Denali"],
+    answer: "Everest",
   },
   {
     question: "What is the largest country by area?",
-    choices: ["USA", "China", "Russia", "Canada"],
+    choices: ["Russia", "USA", "China", "Canada"],
     answer: "Russia",
   },
   {
