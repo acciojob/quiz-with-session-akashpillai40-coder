@@ -10,9 +10,9 @@ const quizData = [
     answer: "Mount Everest",
   },
   {
-    question: "Which planet is known as the Red Planet?",
-    choices: ["Earth", "Mars", "Jupiter", "Venus"],
-    answer: "Mars",
+    question: "What is the largest country by area?",
+    choices: ["USA", "China", "Russia", "Canada"],
+    answer: "Russia",
   },
   {
     question: "Who wrote Hamlet?",
@@ -40,8 +40,8 @@ if (savedScore !== null) {
 
 quizData.forEach((q, index) => {
   const div = document.createElement("div");
-  const title = document.createElement("p");
 
+  const title = document.createElement("p");
   title.textContent = q.question;
   div.appendChild(title);
 
@@ -72,7 +72,6 @@ quizData.forEach((q, index) => {
 
     label.appendChild(radio);
     label.append(choice);
-
     div.appendChild(label);
   });
 
