@@ -2,27 +2,27 @@ const quizData = [
   {
     question: "What is the capital of France?",
     choices: ["Paris", "London", "Berlin", "Madrid"],
-    answer: "Paris", // first = correct
+    answer: "Paris",
   },
   {
     question: "What is the highest mountain in the world?",
     choices: ["K2", "Mount Everest", "Kilimanjaro", "Denali"],
-    answer: "Mount Everest", // first = wrong
+    answer: "Mount Everest",
   },
   {
     question: "What is the largest country by area?",
     choices: ["USA", "China", "Russia", "Canada"],
-    answer: "Russia", // first = wrong
+    answer: "Russia",
   },
   {
     question: "Which is the largest planet in our solar system?",
     choices: ["Jupiter", "Earth", "Mars", "Venus"],
-    answer: "Jupiter", // first = correct
+    answer: "Jupiter",
   },
   {
-    question: "What is 5 + 3?",
-    choices: ["8", "6", "7", "9"],
-    answer: "8", // first = correct
+    question: "What is the capital of Canada?",
+    choices: ["Ottawa", "Toronto", "Vancouver", "Montreal"],
+    answer: "Ottawa",
   },
 ];
 
